@@ -21,6 +21,9 @@ jobs:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
       - name: Setup project
         uses: ./.github/actions/setup-project
 
@@ -31,6 +34,9 @@ jobs:
     name: "Python tests: test-pytest-coverage"
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      
       - name: Setup project
         uses: ./.github/actions/setup-project
 

@@ -1,0 +1,26 @@
+name: "Setup project"
+description: |
+  Install project, with python, uv and dependencies.
+
+permissions:
+  checks: write
+  contents: read
+  id-token: write
+  pull-requests: write
+  statuses: write
+
+runs:
+  using: "composite"
+  steps:
+    - name: Parse .tool-versions
+      uses: ./.github/actions/parse-tool-versions
+      id: tool-versions
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: .venv
+        key: ${{ runner.os }}-deps-${{ hashFiles('uv.lock') }}
+
+    - name: Setup uv+python
+      uses: ./.github/actions/setup-uv
