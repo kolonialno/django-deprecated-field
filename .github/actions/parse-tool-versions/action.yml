@@ -1,0 +1,23 @@
+name: "Parse tool versions"
+description: |
+  Reads values from .tool-versions and exports them as outputs
+
+outputs:
+  python_version:
+    description: "The version of Python to use"
+    value: ${{ steps.parse-tool-versions.outputs.python_version }}
+  uv_version:
+    description: "The version of uv to use"
+    value: ${{ steps.parse-tool-versions.outputs.uv_version }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Parse .tool-versions
+      id: parse-tool-versions
+      shell: bash
+      run: |
+        PYTHON_VERSION=$(grep "^python" .tool-versions | awk '{print $2}')
+        echo "python_version=${PYTHON_VERSION}" >> $GITHUB_OUTPUT
+        UV_VERSION=$(grep "^uv" .tool-versions | awk '{print $2}')
+        echo "uv_version=${UV_VERSION}" >> $GITHUB_OUTPUT
