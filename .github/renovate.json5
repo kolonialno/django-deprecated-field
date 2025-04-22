@@ -1,0 +1,10 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "github>kolonialno/renovate-config//presets/default.json5",
+    "github>kolonialno/renovate-config//presets/autoMerge.json5",
+    "github>kolonialno/renovate-config//presets/groupDevDeps.json5",
+    "github>kolonialno/renovate-config//presets/groupPatch.json5",
+  ],
+  automergeStrategy: "squash",
+}

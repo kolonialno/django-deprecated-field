@@ -1,0 +1,157 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "django-deprecated-field"
+version = "0.1.0"
+authors = [
+    { name = "Oda Tech", email = "tech@oda.com" },
+]
+description = "Util for marking Django DB fields as deprecated, enabling migration consistency with rolling deploys"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=4.2,<6.0",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: Django",
+    "Framework :: Django :: 4",
+    "Framework :: Django :: 5",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/kolonialno/django-deprecated-field"
+"Bug Tracker" = "https://github.com/kolonialno/django-deprecated-field/issues"
+
+[tool.uv]
+package = true
+
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+
+# Assume Python 3.13
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    # Regular flake8 rules
+    "C", "E", "F", "W",
+    # flake8-bugbear rules
+    "B",
+    # Import sorting rules
+    "I",
+    # Django rules
+    "DJ",
+    # flake8-comprehensions
+    "C4",
+    # Pylint rules
+    "PLC", "PLE", "PLR", "PLW",
+    # Ruff
+    "RUF",
+]
+ignore = [
+    # Disable magic value comparison. They're perfectly valid in tests and quite a few
+    # other places in the codebase. It would just be annoying to refactor.
+    "PLR2004",
+    # Too many return statements.
+    "PLR0911",
+    # Too many arguments to function call.
+    "PLR0913",
+    # DJ001 Avoid using null=True on string-based fields
+    "DJ001",
+    # DJ008 Model does not define __str__ method
+    "DJ008",
+]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 7
+
+[tool.ruff.lint.isort]
+known-first-party = ["django_deprecated_field"]
+
+[tool.mypy]
+python_version = "3.13"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests"]
+# Reuse the database between tests
+addopts = [
+    "--reuse-db",
+#    "--allow-hosts=localhost,::1,127.0.0.1",
+]
+# Include captured log messages in system-out in CI report file
+junit_logging = "system-out"
+markers = [ ]
+# --- pytest-django settings
+django_find_project = false
+DJANGO_SETTINGS_MODULE = "tests.settings"
+
+# Ignore select warnings from third party libraries.
+filterwarnings = [
+    "error",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/django_deprecated_field"] 
+
+[dependency-groups]
+dev = [
+    "django-stubs>=5.1.3",
+    "ruff>=0.11.6",
+    "hatchling>=1.21.1",
+    "build>=1.1.1",
+    "twine>=5.0.0",
+    "pytest>=8.3.5",
+    "pytest-django>=4.11.1",
+    "ruff>=0.11.6",
+    "mypy>=1.15.0",
+    "django>=4.2.20",
+    "structlog>=25.2.0",
+    "pytest-xdist>=3.6.1",
+    "pytest-cov>=6.1.1",
+]

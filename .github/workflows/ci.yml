@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - renovate/**
+      - dependabot/**
+      - dev/**
+
+permissions:
+  checks: write
+  contents: read
+  id-token: write
+  pull-requests: write
+  statuses: write
+
+jobs:
+  checks:
+    name: Checks
+    uses: ./.github/workflows/checks-action.yml
+    secrets: inherit

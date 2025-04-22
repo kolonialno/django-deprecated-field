@@ -1,0 +1,39 @@
+name: auth-proxy CI
+
+on: workflow_call
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  python-lint:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: "Python lint: ruff-lint"
+            target: ruff-lint
+          - name: "Python lint: ruff-format"
+            target: ruff-format
+          - name: "Python lint: mypy"
+            target: mypy
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Run linter
+        run: make lint-${{ matrix.target }}
+
+  python-tests:
+    name: "Python tests: test-pytest-coverage"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup project
+        uses: ./.github/actions/setup-project
+
+      - name: Run tests
+        run: |
+          make test-pytest-coverage

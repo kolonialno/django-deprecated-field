@@ -1,0 +1,30 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+      - renovate/**
+      - dependabot/**
+      - dev/**
+
+permissions:
+  checks: write
+  contents: write
+  deployments: write
+  id-token: write
+  pull-requests: write
+  statuses: write
+
+jobs:
+  checks:
+    name: Checks
+    uses: ./.github/workflows/checks-action.yml
+    secrets: inherit
+
+  release-please:
+    name: Release please
+    needs:
+    - checks
+    uses: ./.github/workflows/release-please-action.yml
+    secrets: inherit
