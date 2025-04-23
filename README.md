@@ -45,7 +45,7 @@ After deploying this version to production, you are free to delete the field def
 #### `DEPRECATED_FIELD_STRICT`
 Boolean. Default: `False`. 
 
-Set to `True` to raise an exception whenever the field is accessed in the code. Setting it to `False` will trigger a `WARNING` log. It's recommended to set this to `True` in development, CI and staging, and to `False` in production.
+Set to `True` to raise an exception whenever the field is accessed in the code. Setting it to `False` will trigger a `ERROR` log. It's recommended to set this to `True` in development, CI and staging, and to `False` in production.
 
 #### `DEPRECATED_FIELD_USE_STRUCTLOG`
 Boolean. Default: `False`. 
@@ -83,28 +83,24 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1
 echo '. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc  # or ~/.zshrc for Zsh
 echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc  # or ~/.zshrc for Zsh
 
-# Install Python plugin
+# Install plugins
 asdf plugin add python
-
-# Install uv plugin
 asdf plugin add uv https://github.com/looztra/asdf-uv.git
+asdf plugin add direnv
 
 # Install Python and uv versions specified in .tool-versions
 asdf install
 ```
 
-3. Install development dependencies using uv:
+3. Allow direnv
 ```bash
-# Install the package with development dependencies
-uv pip install -e ".[dev]"
+direnv allow
 ```
 
-4. Create a virtual environment (optional but recommended):
+4. Install development dependencies using uv:
 ```bash
-uv venv
-source .venv/bin/activate  # On Unix/macOS
-# or
-.venv\Scripts\activate  # On Windows
+# Install the packagse with development dependencies
+uv sync --dev
 ```
 
 
@@ -135,7 +131,15 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Pull Request Title Requirement
 
+We require the Pull Request titles to follow the [Conventional Commit specification](https://www.conventionalcommits.org/en/v1.0.0/), and there's a CI check that enforces this.
+
+The very short version of that is that your PR title must be prefixed with `fix:`, `feat:` or `BREAKING CHANGE:`, depending on what you're doing. This will be the basis for the release (semantic) version, and the automatic changelog. Please see the specification for more details.
+
 ## Releasing
+
+When changes are committed to main, a release PR for the package is automatically created, using [Release Please](https://github.com/googleapis/release-please). The [changelog](CHANGELOG.md) is also automatically updated. When we're ready to package your changes into a release and distribute it to users, that PR will be merged.
+
+A new distributable package will be built, and and published to PyPi.
 
 ## License
 
