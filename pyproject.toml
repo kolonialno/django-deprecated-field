@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "django-deprecated-field"
-version = "0.0.0"
+version = "0.1.0"
 authors = [
     { name = "Oda Tech", email = "tech@oda.com" },
 ]
